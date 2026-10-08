@@ -447,7 +447,38 @@
     .footer-links a:hover { color: var(--text); }
 
     /* ─── RESPONSIVE ─── */
+
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--cream); }
+    .testimonials-head { text-align: center; margin-bottom: 5rem; }
+    .testimonials-head h2 { margin-bottom: 0; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+    .testimonials-grid:has(> .testimonial:only-child) { grid-template-columns: minmax(0, 560px); justify-content: center; }
+    .testimonial {
+      padding: 2.75rem; border: 1px solid var(--border); position: relative;
+      transition: border-color 0.3s;
+    }
+    .testimonial:hover { border-color: var(--accent); }
+    .t-quote-mark {
+      font-family: var(--serif); font-size: 4.5rem; font-weight: 300;
+      color: var(--border); line-height: 1; margin-bottom: 1.25rem;
+    }
+    .t-text {
+      font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+      font-style: italic; line-height: 1.7; color: var(--text); margin-bottom: 2rem;
+    }
+    .t-author {
+      font-size: 0.7rem; font-weight: 400; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .t-event {
+      font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 0.3rem; display: block;
+
     @media (max-width: 1024px) {
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid .testimonial:nth-child(3) { display: none; }
+
       nav { padding: 1.5rem 2.5rem; }
       .nav-links { display: none; }
       section { padding: 5rem 2.5rem; }
@@ -476,6 +507,9 @@
     }
 
     @media (max-width: 768px) {
+      .testimonials-grid, .testimonials-grid:has(> .testimonial:only-child) { grid-template-columns: 1fr; }
+      .testimonials-grid .testimonial:nth-child(n+2) { display: none; }
+
       section { padding: 4rem 1.5rem; }
       .hero { padding: 3rem 1.5rem; }
       .anfrage-section { padding: 4rem 1.5rem; }
@@ -632,6 +666,24 @@
         <h3>Ihr Brand.<br><em>Im Mittelpunkt des Erlebnisses.</em></h3>
         <p>Firmenveranstaltungen, Produktlaunches, Weihnachtsfeiern — LaVenezia wird zum Erlebnis-Element. Corporate Branding auf Prints und Interface, Social Sharing mit eigenem Hashtag.</p>
         <a href="#anfrage" class="btn btn-ghost-dark">Event anfragen</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="testimonials-section">
+  <div class="inner">
+    <div class="testimonials-head">
+      <span class="label">Stimmen unserer Kunden</span>
+      <h2>Was unsere Gäste <em>sagen.</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial">
+        <div class="t-quote-mark">&ldquo;</div>
+        <p class="t-text">Wir hatten die Box für ein ganzes Wochenende für unsere Hochzeit gemietet und würden es jederzeit wieder tun. Die Bilder aus der Fotobox sind total schön und qualitativ hochwertig. Und der Kontakt war super entspannt. Bei Fragen war Tom immer erreichbar, super freundlich und man konnte Sachen sofort klären.</p>
+        <p class="t-author">Stephan H.</p>
+        <span class="t-event">Hochzeit</span>
       </div>
     </div>
   </div>
