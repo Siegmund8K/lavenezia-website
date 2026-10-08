@@ -3,12 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LaVenezia — Die elegante Fotobox in Wien</title>
-  <meta name="description" content="LaVenezia bietet die schönste Fotobox-Erfahrung in Wien. Handgefertigt aus Holz, mit professioneller Studiobeleuchtung. Perfekt für Hochzeiten & Corporate Events.">
-
+  <meta name="theme-color" content="#F8F6F2">
+  <title>LaVenezia — Fotobox Wien | Hochzeiten & Events</title>
+  <meta name="description" content="LaVenezia — die eleganteste Fotobox in Wien. Handgefertigt aus Holz, professionelle Studiobeleuchtung, Vollservice für Hochzeiten & Corporate Events.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LaVenezia — Fotobox Wien">
+  <meta property="og:description" content="Die eleganteste Fotobox in Wien. Handgefertigt aus Holz für Hochzeiten & Corporate Events.">
+  <meta property="og:image" content="/images/booth-floral.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
+  <link rel="preload" as="image" href="images/booth-floral.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "LaVenezia",
+    "description": "Elegante Fotobox aus Holz für Hochzeiten und Corporate Events in Wien",
+    "address": { "@type": "PostalAddress", "addressLocality": "Wien", "addressCountry": "AT" },
+    "areaServed": "Wien",
+    "url": "https://lavenezia-website.vercel.app"
+  }
+  </script>
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,11 +35,12 @@
       --cream: #F8F6F2;
       --white: #FFFFFF;
       --text: #28251F;
-      --muted: #7A7470;
+      --muted: #6B6865;
       --accent: #B5A48C;
       --border: #E5E1D9;
       --serif: 'Cormorant Garamond', Georgia, serif;
       --sans: 'Jost', -apple-system, sans-serif;
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
 
     html { scroll-behavior: smooth; }
@@ -34,551 +53,574 @@
       font-size: 16px;
       line-height: 1.75;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-    /* ─── NAV ─── */
+    /* ── SKIP LINK ── */
+    .skip-link {
+      position: absolute; top: -100%; left: 1rem;
+      background: var(--text); color: var(--cream);
+      padding: 0.5rem 1rem; font-size: 0.8rem; z-index: 9999;
+      text-decoration: none;
+    }
+    .skip-link:focus { top: 1rem; }
+
+    /* ── ANIMATIONS ── */
+    .anim {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.75s var(--ease), transform 0.75s var(--ease);
+    }
+    .anim.in { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s; }
+    .d2 { transition-delay: 0.2s; }
+    .d3 { transition-delay: 0.3s; }
+    .d4 { transition-delay: 0.4s; }
+    @media (prefers-reduced-motion: reduce) {
+      .anim { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* ── NAV ── */
     nav {
-      position: fixed;
-      inset: 0 0 auto;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+      position: fixed; inset: 0 0 auto; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
       padding: 1.75rem 4rem;
-      transition: background 0.35s, box-shadow 0.35s;
+      transition: background 0.4s, box-shadow 0.4s;
     }
     nav.scrolled {
-      background: rgba(248, 246, 242, 0.94);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+      background: rgba(248,246,242,0.95);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       box-shadow: 0 1px 0 var(--border);
     }
     .nav-logo {
-      font-family: var(--serif);
-      font-size: 1.45rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      text-decoration: none;
+      font-family: var(--serif); font-size: 1.5rem; font-weight: 500;
+      letter-spacing: 0.08em; text-decoration: none;
+      color: var(--text); position: relative; z-index: 201;
+      transition: color 0.3s;
     }
-    nav.light .nav-logo,
-    nav.light .nav-link,
-    nav.light .nav-cta { color: #fff; }
-    nav.light .nav-cta { border-bottom-color: rgba(255,255,255,0.6); }
+    nav.light .nav-logo { color: #fff; }
     nav.scrolled .nav-logo,
-    nav.scrolled .nav-link,
-    nav.scrolled .nav-cta { color: var(--text); }
-    nav.scrolled .nav-cta { border-bottom-color: var(--text); }
+    nav.menu-open .nav-logo { color: var(--text); }
+
     .nav-links { display: flex; gap: 2.5rem; list-style: none; }
     .nav-link {
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-      transition: opacity 0.2s;
+      font-size: 0.68rem; font-weight: 400; letter-spacing: 0.2em;
+      text-transform: uppercase; text-decoration: none;
+      transition: opacity 0.2s, color 0.3s;
     }
+    nav.light .nav-link { color: rgba(255,255,255,0.85); }
+    nav.scrolled .nav-link { color: var(--text); }
     .nav-link:hover { opacity: 0.5; }
+
     .nav-cta {
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text);
-      text-decoration: none;
-      border-bottom: 1px solid var(--text);
-      padding-bottom: 2px;
-      transition: opacity 0.2s;
+      font-size: 0.68rem; font-weight: 400; letter-spacing: 0.2em;
+      text-transform: uppercase; text-decoration: none;
+      border-bottom: 1px solid; padding-bottom: 2px;
+      transition: opacity 0.2s, color 0.3s, border-color 0.3s;
     }
+    nav.light .nav-cta { color: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.5); }
+    nav.scrolled .nav-cta { color: var(--text); border-color: var(--text); }
     .nav-cta:hover { opacity: 0.5; }
 
-    /* ─── HERO ─── */
+    /* Hamburger */
+    .nav-burger {
+      display: none; flex-direction: column; justify-content: center; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px;
+      position: relative; z-index: 201; width: 32px; height: 32px;
+    }
+    .nav-burger span {
+      display: block; width: 22px; height: 1px; background: currentColor;
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    nav.light .nav-burger { color: #fff; }
+    nav.scrolled .nav-burger,
+    nav.menu-open .nav-burger { color: var(--text); }
+    nav.menu-open .nav-burger span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    nav.menu-open .nav-burger span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    nav.menu-open .nav-burger span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    /* Mobile overlay */
+    .nav-overlay {
+      position: fixed; inset: 0; background: var(--cream);
+      z-index: 199; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.35s var(--ease);
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+    .nav-overlay ul { list-style: none; text-align: center; }
+    .nav-overlay li { margin: 0.25rem 0; }
+    .nav-overlay a {
+      font-family: var(--serif); font-size: clamp(2.2rem, 8vw, 3.75rem);
+      font-weight: 400; color: var(--text); text-decoration: none;
+      display: block; padding: 0.3rem 0; transition: color 0.2s;
+    }
+    .nav-overlay a:hover { color: var(--accent); }
+    .nav-overlay-note {
+      margin-top: 3rem; font-size: 0.65rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted);
+    }
+
+    /* ── HERO ── */
     .hero {
-      position: relative;
-      height: 100vh;
-      min-height: 640px;
-      display: flex;
-      align-items: flex-end;
-      padding: 5rem 4rem;
-      overflow: hidden;
+      position: relative; height: 100svh; min-height: 640px;
+      display: flex; align-items: flex-end; padding: 5rem 4rem; overflow: hidden;
     }
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-    }
-    .hero-bg img { object-position: center 25%; }
+    .hero-bg { position: absolute; inset: 0; }
+    .hero-bg img { object-position: center 15%; }
     .hero-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(20,18,14,0.65) 0%,
-        rgba(20,18,14,0.15) 45%,
-        transparent 100%
-      );
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(20,18,14,0.72) 0%, rgba(20,18,14,0.18) 45%, transparent 100%);
     }
-    .hero-body {
-      position: relative;
-      z-index: 1;
-      max-width: 680px;
+    .hero-body { position: relative; z-index: 1; max-width: 700px; }
+    .hero-eyebrow {
+      font-size: 0.64rem; font-weight: 400; letter-spacing: 0.28em;
+      text-transform: uppercase; color: rgba(255,255,255,0.58); margin-bottom: 1.5rem;
     }
-    .eyebrow {
-      font-size: 0.65rem;
-      font-weight: 400;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      margin-bottom: 1.25rem;
-    }
-    .hero-body .eyebrow { color: rgba(255,255,255,0.65); }
     h1 {
       font-family: var(--serif);
       font-size: clamp(3rem, 6.5vw, 5.5rem);
-      font-weight: 400;
-      line-height: 1.05;
-      color: #fff;
-      margin-bottom: 2.25rem;
+      font-weight: 400; line-height: 1.05; color: #fff; margin-bottom: 2.5rem;
     }
     h1 em { font-style: italic; font-weight: 300; }
 
-    /* ─── BUTTONS ─── */
-    .btn {
-      display: inline-block;
-      font-size: 0.68rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      text-decoration: none;
-      padding: 1rem 2.75rem;
-      border: 1px solid;
-      transition: background 0.25s, color 0.25s;
-      cursor: pointer;
+    .hero-scroll {
+      position: absolute; bottom: 2.75rem; left: 50%;
+      transform: translateX(-50%); z-index: 1;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      animation: hero-bounce 2.4s ease-in-out infinite;
     }
-    .btn-ghost-light {
-      color: #fff;
-      border-color: rgba(255,255,255,0.55);
-      background: transparent;
+    .hero-scroll span {
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
     }
-    .btn-ghost-light:hover { background: #fff; color: var(--text); border-color: #fff; }
-    .btn-ghost-dark {
-      color: var(--text);
-      border-color: var(--text);
-      background: transparent;
+    .hero-scroll svg { color: rgba(255,255,255,0.4); }
+    @keyframes hero-bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(7px); }
     }
-    .btn-ghost-dark:hover { background: var(--text); color: var(--cream); }
-    .btn-ghost-white {
-      color: var(--cream);
-      border-color: rgba(248,246,242,0.4);
-      background: transparent;
-      font-family: var(--sans);
-    }
-    .btn-ghost-white:hover { background: var(--cream); color: var(--text); }
 
-    /* ─── GLOBAL SECTION ─── */
-    section { padding: 7rem 4rem; }
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-block; font-family: var(--sans);
+      font-size: 0.68rem; font-weight: 400; letter-spacing: 0.22em;
+      text-transform: uppercase; text-decoration: none;
+      padding: 1rem 2.75rem; border: 1px solid;
+      transition: background 0.3s var(--ease), color 0.3s var(--ease), border-color 0.3s;
+      cursor: pointer; background: transparent;
+    }
+    .btn-light { color: #fff; border-color: rgba(255,255,255,0.5); }
+    .btn-light:hover { background: #fff; color: var(--text); border-color: #fff; }
+    .btn-dark { color: var(--text); border-color: var(--text); }
+    .btn-dark:hover { background: var(--text); color: var(--cream); }
+    .btn-white { color: var(--cream); border-color: rgba(248,246,242,0.35); }
+    .btn-white:hover { background: var(--cream); color: var(--text); }
+    .btn-accent { color: var(--text); border-color: var(--accent); }
+    .btn-accent:hover { background: var(--accent); color: var(--cream); border-color: var(--accent); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 8rem 4rem; }
     .inner { max-width: 1200px; margin: 0 auto; }
-    .inner-wide { max-width: 1400px; margin: 0 auto; }
-    .inner-narrow { max-width: 860px; margin: 0 auto; }
+    .inner-wide { max-width: 1440px; margin: 0 auto; }
+    .inner-narrow { max-width: 880px; margin: 0 auto; }
 
     .label {
-      font-size: 0.62rem;
-      font-weight: 400;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 1.75rem;
+      display: block; font-size: 0.62rem; font-weight: 400;
+      letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.5rem;
     }
     h2 {
       font-family: var(--serif);
-      font-size: clamp(2.1rem, 4vw, 3.4rem);
-      font-weight: 400;
-      line-height: 1.1;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 400; line-height: 1.1;
     }
     h2 em { font-style: italic; }
     .body-text {
-      color: var(--muted);
-      font-size: 0.9rem;
-      max-width: 500px;
-      line-height: 1.8;
+      font-size: 0.9rem; color: var(--muted);
+      line-height: 1.85; max-width: 500px;
     }
-    .rule {
-      width: 36px;
-      height: 1px;
-      background: var(--border);
-      margin: 2rem 0;
-    }
+    .rule { width: 32px; height: 1px; background: var(--border); margin: 2.25rem 0; }
 
-    /* ─── INTRO ─── */
+    /* ── INTRO ── */
     .intro-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 6rem;
-      align-items: center;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 7rem; align-items: center;
     }
-    .intro-image {
-      aspect-ratio: 3/4;
-      overflow: hidden;
-    }
+    .intro-image { aspect-ratio: 3/4; overflow: hidden; }
     .intro-text h2 { margin-bottom: 0; }
-    .intro-text .body-text { margin-bottom: 2.25rem; }
+    .intro-text .body-text { margin-top: 1.5rem; }
+    .intro-text .btn { margin-top: 3rem; }
 
-    /* ─── FEATURES ─── */
+    /* ── FEATURES ── */
     .features-section { background: var(--white); }
-    .features-head {
-      text-align: center;
-      margin-bottom: 5rem;
-    }
-    .features-head h2 { margin-bottom: 0.75rem; }
-    .features-head .body-text { margin: 0 auto; text-align: center; max-width: 460px; }
+    .features-head { text-align: center; margin-bottom: 5.5rem; }
+    .features-head h2 { margin-bottom: 1rem; }
+    .features-head .body-text { margin: 0 auto; text-align: center; }
     .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 3.5rem 5rem;
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 4rem 5.5rem;
     }
     .feat-num {
-      font-family: var(--serif);
-      font-size: 2.75rem;
-      font-weight: 300;
-      color: var(--border);
-      line-height: 1;
-      margin-bottom: 1rem;
+      font-family: var(--serif); font-size: 2.5rem; font-weight: 300;
+      color: #DDD9D2; line-height: 1; margin-bottom: 1.1rem;
     }
-    .feat h3 {
-      font-family: var(--serif);
-      font-size: 1.35rem;
-      font-weight: 400;
-      margin-bottom: 0.6rem;
-    }
-    .feat p { font-size: 0.875rem; color: var(--muted); max-width: none; }
+    .feat h3 { font-family: var(--serif); font-size: 1.3rem; font-weight: 400; margin-bottom: 0.6rem; }
+    .feat p { font-size: 0.875rem; color: var(--muted); }
 
-    /* ─── GALLERY ─── */
+    /* ── GALLERY ── */
     .gallery-section { padding-top: 0; }
-    .gallery-header {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-bottom: 2.5rem;
-    }
+    .gallery-header { margin-bottom: 2.5rem; }
     .gallery-grid {
       display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      grid-template-rows: auto auto;
-      gap: 0.6rem;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 360px 360px;
+      gap: 0.5rem;
     }
     .g { overflow: hidden; }
-    .g img { transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-    .g:hover img { transform: scale(1.04); }
+    .g img { transition: transform 0.7s var(--ease); }
+    .g:hover img { transform: scale(1.05); }
+    .g1 { grid-column: span 2; }
+    .g5 { grid-column: span 2; }
 
-    .g1 { grid-column: 1 / 6; grid-row: 1; aspect-ratio: 4/3; }
-    .g2 { grid-column: 6 / 9; grid-row: 1; aspect-ratio: 3/4; }
-    .g3 { grid-column: 9 / 13; grid-row: 1; aspect-ratio: 4/3; }
-    .g4 { grid-column: 1 / 5; grid-row: 2; aspect-ratio: 3/4; }
-    .g5 { grid-column: 5 / 9; grid-row: 2; aspect-ratio: 3/4; }
-    .g6 { grid-column: 9 / 13; grid-row: 2; aspect-ratio: 3/4; }
+    /* ── CTA STRIP ── */
+    .cta-strip {
+      background: var(--text); text-align: center; padding: 5.5rem 4rem;
+    }
+    .cta-strip h2 { color: var(--cream); margin-bottom: 2.25rem; }
+    .cta-strip h2 em { color: var(--accent); font-style: italic; }
 
-    /* ─── EVENTS ─── */
+    /* ── EVENTS ── */
     .events-section { background: var(--white); }
     .events-head { text-align: center; margin-bottom: 4.5rem; }
-    .events-head h2 { margin-bottom: 0; }
-    .events-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3.5rem;
-    }
-    .event-img {
-      aspect-ratio: 4/5;
-      overflow: hidden;
-      margin-bottom: 2rem;
-    }
-    .event-img img { transition: transform 0.65s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+    .events-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; }
+    .event-img { aspect-ratio: 4/5; overflow: hidden; margin-bottom: 2rem; }
+    .event-img img { transition: transform 0.7s var(--ease); }
     .event-card:hover .event-img img { transform: scale(1.04); }
     .event-tag {
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
+      display: block; font-size: 0.62rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.75rem;
     }
     .event-card h3 {
-      font-family: var(--serif);
-      font-size: 1.75rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 1rem;
+      font-family: var(--serif); font-size: 1.8rem; font-weight: 400;
+      line-height: 1.2; margin-bottom: 1rem;
     }
     .event-card h3 em { font-style: italic; }
-    .event-card p { font-size: 0.875rem; color: var(--muted); margin-bottom: 1.75rem; max-width: none; }
+    .event-card .body-text { max-width: none; margin-bottom: 2rem; }
 
-    /* ─── PROCESS ─── */
-    .process-section { background: var(--cream); }
+    /* ── TESTIMONIALS ── */
+    .testimonials-section { background: var(--cream); }
+    .testimonials-head { text-align: center; margin-bottom: 5rem; }
+    .testimonials-head h2 { margin-bottom: 0; }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
+    .testimonial {
+      padding: 2.75rem; border: 1px solid var(--border); position: relative;
+      transition: border-color 0.3s;
+    }
+    .testimonial:hover { border-color: var(--accent); }
+    .t-quote-mark {
+      font-family: var(--serif); font-size: 4.5rem; font-weight: 300;
+      color: var(--border); line-height: 1; margin-bottom: 1.25rem;
+    }
+    .t-text {
+      font-family: var(--serif); font-size: 1.05rem; font-weight: 400;
+      font-style: italic; line-height: 1.7; color: var(--text); margin-bottom: 2rem;
+    }
+    .t-author {
+      font-size: 0.7rem; font-weight: 400; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .t-event {
+      font-size: 0.65rem; color: var(--accent); letter-spacing: 0.1em;
+      text-transform: uppercase; margin-top: 0.3rem; display: block;
+    }
+
+    /* ── PROCESS ── */
+    .process-section { background: var(--white); }
     .process-head { text-align: center; margin-bottom: 5rem; }
-    .process-head h2 { margin-bottom: 0.75rem; }
+    .process-head h2 { margin-bottom: 1rem; }
     .process-head .body-text { margin: 0 auto; text-align: center; }
-    .process-steps {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-    }
-    .process-step {
-      padding: 0 2rem;
-      border-left: 1px solid var(--border);
-    }
+    .process-steps { display: grid; grid-template-columns: repeat(4, 1fr); }
+    .process-step { padding: 0 2.5rem; border-left: 1px solid var(--border); }
     .process-step:first-child { border-left: none; padding-left: 0; }
     .step-n {
-      font-family: var(--serif);
-      font-size: 3.5rem;
-      font-weight: 300;
-      color: var(--accent);
-      line-height: 1;
-      margin-bottom: 1.25rem;
+      font-family: var(--serif); font-size: 3.5rem; font-weight: 300;
+      color: var(--accent); line-height: 1; margin-bottom: 1.25rem;
     }
-    .process-step h4 {
-      font-family: var(--serif);
-      font-size: 1.15rem;
-      font-weight: 400;
-      margin-bottom: 0.6rem;
-    }
-    .process-step p { font-size: 0.85rem; color: var(--muted); max-width: none; }
+    .process-step h4 { font-family: var(--serif); font-size: 1.15rem; font-weight: 400; margin-bottom: 0.6rem; }
+    .process-step p { font-size: 0.85rem; color: var(--muted); }
+    .process-cta { text-align: center; margin-top: 5rem; }
 
-    /* ─── ANFRAGE ─── */
-    .anfrage-section {
-      background: var(--text);
-      padding: 7rem 4rem;
-    }
-    .anfrage-head {
-      text-align: center;
-      margin-bottom: 4.5rem;
-    }
+    /* ── ANFRAGE ── */
+    .anfrage-section { background: var(--text); padding: 8rem 4rem; }
+    .anfrage-head { text-align: center; margin-bottom: 5rem; }
     .anfrage-head .label { color: var(--accent); }
-    .anfrage-head h2 { color: var(--cream); margin-bottom: 1rem; }
-    .anfrage-head p { color: rgba(248,246,242,0.55); font-size: 0.9rem; max-width: 480px; margin: 0 auto; text-align: center; }
+    .anfrage-head h2 { color: var(--cream); margin-bottom: 1.25rem; }
+    .anfrage-head p { font-size: 0.9rem; color: rgba(248,246,242,0.5); max-width: 440px; margin: 0 auto; text-align: center; }
 
-    .form-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0 3rem;
-    }
-    .fg { display: flex; flex-direction: column; margin-bottom: 2.5rem; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 3.5rem; }
+    .fg { display: flex; flex-direction: column; margin-bottom: 2.75rem; }
     .fg.full { grid-column: span 2; }
 
     label {
-      font-size: 0.6rem;
-      font-weight: 400;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: rgba(248,246,242,0.4);
-      margin-bottom: 0.6rem;
+      font-size: 0.6rem; font-weight: 400; letter-spacing: 0.22em;
+      text-transform: uppercase; color: rgba(248,246,242,0.35); margin-bottom: 0.6rem;
     }
     input, select, textarea {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid rgba(248,246,242,0.18);
-      color: var(--cream);
-      font-family: var(--sans);
-      font-size: 0.95rem;
-      font-weight: 300;
-      padding: 0.6rem 0 0.75rem;
-      outline: none;
-      width: 100%;
-      transition: border-color 0.25s;
-      -webkit-appearance: none;
+      background: transparent; border: none;
+      border-bottom: 1px solid rgba(248,246,242,0.15);
+      color: var(--cream); font-family: var(--sans);
+      font-size: 0.95rem; font-weight: 300;
+      padding: 0.5rem 0 0.85rem; outline: none; width: 100%;
+      transition: border-color 0.3s; -webkit-appearance: none;
     }
-    input::placeholder, textarea::placeholder { color: rgba(248,246,242,0.25); }
+    input::placeholder, textarea::placeholder { color: rgba(248,246,242,0.2); }
     input:focus, select:focus, textarea:focus { border-bottom-color: var(--accent); }
     select { cursor: pointer; }
     select option { background: #28251F; color: #F8F6F2; }
-    textarea { resize: none; min-height: 90px; }
+    textarea { resize: none; min-height: 100px; }
 
-    .form-foot {
-      margin-top: 0.5rem;
-      text-align: center;
-    }
-    .form-foot .btn {
-      font-family: var(--sans);
-    }
-    .form-note {
-      margin-top: 1.25rem;
-      font-size: 0.72rem;
-      color: rgba(248,246,242,0.28);
-      letter-spacing: 0.05em;
-    }
+    .form-foot { text-align: center; margin-top: 0.5rem; }
+    .form-note { margin-top: 1.5rem; font-size: 0.72rem; color: rgba(248,246,242,0.22); letter-spacing: 0.05em; }
+
     .form-success {
-      display: none;
-      text-align: center;
-      padding: 3rem 0;
+      display: none; text-align: center; padding: 4rem 0;
+    }
+    .form-success-ring {
+      width: 52px; height: 52px; border: 1px solid var(--accent);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 2rem; color: var(--accent);
     }
     .form-success h3 {
-      font-family: var(--serif);
-      font-size: 2rem;
-      font-weight: 400;
-      color: var(--cream);
-      margin-bottom: 0.75rem;
+      font-family: var(--serif); font-size: 2.5rem; font-weight: 400;
+      color: var(--cream); margin-bottom: 1rem;
     }
-    .form-success p { color: rgba(248,246,242,0.55); font-size: 0.9rem; max-width: 400px; margin: 0 auto; }
+    .form-success p { font-size: 0.9rem; color: rgba(248,246,242,0.5); max-width: 400px; margin: 0 auto; }
 
-    /* ─── FOOTER ─── */
-    footer {
-      padding: 2.5rem 4rem;
-      border-top: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    /* ── FOOTER ── */
+    footer { padding: 3rem 4rem; border-top: 1px solid var(--border); }
+    .footer-inner { display: flex; align-items: center; justify-content: space-between; }
     .footer-logo {
-      font-family: var(--serif);
-      font-size: 1.25rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      text-decoration: none;
+      font-family: var(--serif); font-size: 1.3rem; font-weight: 500;
+      letter-spacing: 0.08em; color: var(--text); text-decoration: none;
     }
-    .footer-copy { font-size: 0.75rem; color: var(--muted); }
+    .footer-center { text-align: center; }
+    .footer-copy { font-size: 0.72rem; color: var(--muted); }
+    .footer-contact { font-size: 0.72rem; color: var(--muted); margin-top: 0.3rem; }
+    .footer-contact a { color: inherit; text-decoration: none; transition: color 0.2s; }
+    .footer-contact a:hover { color: var(--text); }
     .footer-links { display: flex; gap: 2rem; }
     .footer-links a {
-      font-size: 0.68rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
+      font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; transition: color 0.2s;
     }
     .footer-links a:hover { color: var(--text); }
 
-    /* ─── RESPONSIVE ─── */
+    /* ── FLOATING CTA (mobile) ── */
+    .mobile-cta {
+      display: none; position: fixed; bottom: 0; left: 0; right: 0;
+      z-index: 150; padding: 0.875rem 1.5rem;
+      background: rgba(248,246,242,0.97);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+    }
+    .mobile-cta a {
+      display: block; width: 100%; text-align: center;
+      background: var(--text); color: var(--cream);
+      font-family: var(--sans); font-size: 0.7rem; font-weight: 400;
+      letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none;
+      padding: 1rem; transition: background 0.25s;
+    }
+    .mobile-cta a:hover { background: #3d3930; }
+
+    /* ── WHATSAPP ── */
+    .whatsapp-btn {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 149;
+      width: 52px; height: 52px; background: #25D366; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      text-decoration: none; transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .whatsapp-btn:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,0,0,0.22); }
+    .whatsapp-btn svg { width: 26px; height: 26px; fill: #fff; }
+
+    /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      nav { padding: 1.5rem 2.5rem; }
-      .nav-links { display: none; }
-      section { padding: 5rem 2.5rem; }
-      .hero { padding: 4rem 2.5rem; }
-      .anfrage-section { padding: 5rem 2.5rem; }
-      footer { padding: 2rem 2.5rem; }
+      nav { padding: 1.5rem 2rem; }
+      .nav-links, .nav-cta { display: none; }
+      .nav-burger { display: flex; }
+
+      section { padding: 5.5rem 2rem; }
+      .hero { padding: 4rem 2rem; }
+      .anfrage-section, .cta-strip { padding: 5rem 2rem; }
+      footer { padding: 2.5rem 2rem; }
+
+      .mobile-cta { display: block; }
+      .whatsapp-btn { bottom: 5.5rem; }
 
       .intro-grid { grid-template-columns: 1fr; gap: 3rem; }
-      .intro-image { aspect-ratio: 4/3; }
+      .intro-image { aspect-ratio: 4/3; order: -1; }
 
-      .features-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem 3rem; }
+      .features-grid { grid-template-columns: 1fr 1fr; gap: 3rem; }
 
       .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: auto;
+        grid-template-rows: 260px 260px 260px;
       }
-      .g1, .g2, .g3, .g4, .g5, .g6 {
-        grid-column: auto;
-        grid-row: auto;
-        aspect-ratio: 4/3;
-      }
+      .g1, .g5 { grid-column: span 2; }
+      .g2, .g3, .g4, .g6 { grid-column: span 1; }
+
+      .events-grid { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; }
+
+      .testimonials-grid { grid-template-columns: 1fr 1fr; }
+      .testimonials-grid .testimonial:last-child { display: none; }
 
       .process-steps { grid-template-columns: 1fr 1fr; gap: 3rem; }
-      .process-step { border-left: none; padding-left: 0; border-top: 1px solid var(--border); padding-top: 2rem; }
-      .process-step:first-child { border-top: none; padding-top: 0; }
-    }
-
-    @media (max-width: 768px) {
-      section { padding: 4rem 1.5rem; }
-      .hero { padding: 3rem 1.5rem; }
-      .anfrage-section { padding: 4rem 1.5rem; }
-      footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1.25rem; text-align: center; }
-      .footer-links { justify-content: center; }
-
-      .features-grid { grid-template-columns: 1fr; gap: 2rem; }
-
-      .events-grid { grid-template-columns: 1fr; }
+      .process-step {
+        border-left: none; padding-left: 0;
+        border-top: 1px solid var(--border); padding-top: 2.5rem;
+      }
+      .process-step:nth-child(-n+2) { border-top: none; padding-top: 0; }
 
       .form-grid { grid-template-columns: 1fr; }
       .fg.full { grid-column: span 1; }
+
+      .footer-inner { flex-direction: column; gap: 1.75rem; text-align: center; }
+      .footer-links { justify-content: center; }
     }
 
-    @media (max-width: 480px) {
-      .gallery-grid { grid-template-columns: 1fr; }
+    @media (max-width: 640px) {
+      section { padding: 4.5rem 1.25rem; }
+      .hero { padding: 3.5rem 1.25rem; min-height: 580px; }
+      .anfrage-section, .cta-strip { padding: 4.5rem 1.25rem; }
+
+      .gallery-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 200px 200px 200px;
+      }
+      .g1 { grid-column: span 2; }
+      .g5 { grid-column: span 2; }
+
+      .features-grid { grid-template-columns: 1fr; }
+
+      .testimonials-grid { grid-template-columns: 1fr; }
+      .testimonials-grid .testimonial:last-child { display: block; }
+      .testimonials-grid .testimonial:nth-child(n+2) { display: none; }
+
       .process-steps { grid-template-columns: 1fr; }
+      .process-step {
+        border-top: 1px solid var(--border); border-left: none;
+        padding: 2rem 0 0;
+      }
+      .process-step:first-child { border-top: none; padding-top: 0; }
+
+      .hero-scroll { display: none; }
+      .whatsapp-btn { bottom: 5rem; right: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- ─── NAV ─── -->
+<a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+<!-- ── NAV ── -->
 <nav id="nav" class="light">
   <a href="#" class="nav-logo">LaVenezia</a>
   <ul class="nav-links">
     <li><a href="#leistungen" class="nav-link">Leistungen</a></li>
     <li><a href="#galerie" class="nav-link">Galerie</a></li>
     <li><a href="#events" class="nav-link">Events</a></li>
+    <li><a href="#anfrage" class="nav-link">Kontakt</a></li>
   </ul>
   <a href="#anfrage" class="nav-cta">Anfrage stellen</a>
+  <button class="nav-burger" id="nav-burger" aria-label="Menü öffnen" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<!-- ─── HERO ─── -->
-<section class="hero">
+<div class="nav-overlay" id="nav-overlay" aria-hidden="true">
+  <ul>
+    <li><a href="#leistungen" class="overlay-link">Leistungen</a></li>
+    <li><a href="#galerie" class="overlay-link">Galerie</a></li>
+    <li><a href="#events" class="overlay-link">Events</a></li>
+    <li><a href="#anfrage" class="overlay-link">Anfrage</a></li>
+  </ul>
+  <p class="nav-overlay-note">Wien · Hochzeiten & Events</p>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="main">
   <div class="hero-bg">
-    <img src="images/couple-side.jpg" alt="LaVenezia Fotobox auf einer Hochzeit" />
+    <img src="images/booth-floral.jpg" alt="LaVenezia Fotobox" fetchpriority="high" />
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-body">
-    <p class="eyebrow">Fotobox · Wien</p>
+    <p class="hero-eyebrow">Fotobox · Wien</p>
     <h1>Die <em>schönste</em><br>Fotobox-Erfahrung<br>in Wien.</h1>
-    <a href="#anfrage" class="btn btn-ghost-light">Jetzt anfragen</a>
+    <a href="#anfrage" class="btn btn-light">Jetzt anfragen</a>
+  </div>
+  <div class="hero-scroll" aria-hidden="true">
+    <span>Scroll</span>
+    <svg width="16" height="22" viewBox="0 0 16 22" fill="none" stroke="currentColor" stroke-width="1">
+      <path d="M8 1v18M2 13l6 7 6-7"/>
+    </svg>
   </div>
 </section>
 
-<!-- ─── INTRO ─── -->
+<!-- ── INTRO ── -->
 <section>
   <div class="inner">
     <div class="intro-grid">
       <div class="intro-text">
-        <p class="label">Über LaVenezia</p>
-        <h2>Eleganz,<br><em>die sich einfügt.</em></h2>
-        <div class="rule"></div>
-        <p class="body-text">LaVenezia ist keine gewöhnliche Fotobox. Gefertigt aus Holz und natürlichen Materialien, ausgestattet mit professioneller Studiobeleuchtung — sie fügt sich nahtlos in jede Location ein.</p>
-        <br>
-        <p class="body-text">Kein Kabelgewirr, kein technischer Anblick. Nur pure Ästhetik. Und ein vollständiger Service, der nichts dem Zufall überlässt.</p>
-        <br><br>
-        <a href="#anfrage" class="btn btn-ghost-dark">Verfügbarkeit prüfen</a>
+        <span class="label anim">Über LaVenezia</span>
+        <h2 class="anim d1">Eleganz,<br><em>die sich einfügt.</em></h2>
+        <div class="rule anim d2"></div>
+        <p class="body-text anim d2">LaVenezia ist keine gewöhnliche Fotobox. Gefertigt aus Holz und natürlichen Materialien, ausgestattet mit professioneller Studiobeleuchtung — sie fügt sich nahtlos in jede Location ein.</p>
+        <p class="body-text anim d3">Kein Kabelgewirr, kein technischer Anblick. Nur pure Ästhetik. Und ein vollständiger Service, der nichts dem Zufall überlässt.</p>
+        <a href="#anfrage" class="btn btn-dark anim d3">Verfügbarkeit prüfen</a>
       </div>
-      <div class="intro-image">
-        <img src="images/booth-floral.jpg" alt="LaVenezia Fotobox" />
+      <div class="intro-image anim d2">
+        <img src="images/booth-clean.jpg" alt="LaVenezia Fotobox aus Holz" loading="lazy" />
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FEATURES ─── -->
+<!-- ── FEATURES ── -->
 <section class="features-section" id="leistungen">
   <div class="inner">
     <div class="features-head">
-      <p class="label">Das Erlebnis</p>
-      <h2>Alles inklusive.<br><em>Nichts dem Zufall überlassen.</em></h2>
-      <br>
-      <p class="body-text">Von der ersten Anfrage bis zum letzten Foto — wir liefern ein Erlebnis, das begeistert.</p>
+      <span class="label anim">Das Erlebnis</span>
+      <h2 class="anim d1">Alles inklusive.<br><em>Nichts dem Zufall überlassen.</em></h2>
+      <p class="body-text anim d2">Von der ersten Anfrage bis zum letzten Foto — wir liefern ein Erlebnis, das begeistert.</p>
     </div>
     <div class="features-grid">
-      <div class="feat">
+      <div class="feat anim">
         <div class="feat-num">01</div>
         <h3>Studio-Licht</h3>
         <p>Professionelle Studiobeleuchtung für makellose Fotos — wie beim echten Fotografen.</p>
       </div>
-      <div class="feat">
+      <div class="feat anim d1">
         <div class="feat-num">02</div>
         <h3>Video & GIFs</h3>
         <p>Kurze Videos und animierte GIFs, die Momente lebendig machen und gern geteilt werden.</p>
       </div>
-      <div class="feat">
+      <div class="feat anim d2">
         <div class="feat-num">03</div>
         <h3>Social Sharing</h3>
-        <p>Direkt aus der Box auf's Smartphone. Sofort bereit für Instagram, WhatsApp und Co.</p>
+        <p>Direkt aus der Box aufs Smartphone. Sofort bereit für Instagram, WhatsApp und Co.</p>
       </div>
-      <div class="feat">
+      <div class="feat anim">
         <div class="feat-num">04</div>
         <h3>Individuelle Gestaltung</h3>
         <p>Jedes Detail anpassbar — Templates, Overlays, Prints. Ganz nach eurem Stil und Event.</p>
       </div>
-      <div class="feat">
+      <div class="feat anim d1">
         <div class="feat-num">05</div>
         <h3>Holz & Natur</h3>
         <p>Handgefertigtes Gehäuse aus echtem Holz. Kein Plastik, keine Kompromisse beim Design.</p>
       </div>
-      <div class="feat">
+      <div class="feat anim d2">
         <div class="feat-num">06</div>
         <h3>Vollservice</h3>
         <p>Aufbau, Betreuung, Abbau — wir kümmern uns um alles. Ihr genießt den Abend.</p>
@@ -587,183 +629,282 @@
   </div>
 </section>
 
-<!-- ─── GALLERY ─── -->
+<!-- ── GALLERY ── -->
 <section class="gallery-section" id="galerie">
   <div class="inner-wide">
-    <div class="gallery-header">
-      <div>
-        <p class="label">Impressionen</p>
-        <h2>Momente, <em>die bleiben.</em></h2>
-      </div>
+    <div class="gallery-header inner anim">
+      <span class="label">Impressionen</span>
+      <h2>Momente, <em>die bleiben.</em></h2>
     </div>
     <div class="gallery-grid">
-      <div class="g g1"><img src="images/wedding-couple.jpg" alt="Hochzeit" /></div>
-      <div class="g g2"><img src="images/lamp.jpg" alt="Fotolicht" /></div>
-      <div class="g g3"><img src="images/prints-christmas.jpg" alt="Individuelle Drucke" /></div>
-      <div class="g g4"><img src="images/booth-floral.jpg" alt="Fotobox mit Blumen" /></div>
-      <div class="g g5"><img src="images/guestbook.jpg" alt="Gästebuch" /></div>
-      <div class="g g6"><img src="images/wedding-fun.jpg" alt="Spaß bei der Hochzeit" /></div>
+      <div class="g g1"><img src="images/wedding-couple.jpg" alt="Hochzeit mit LaVenezia" loading="lazy" /></div>
+      <div class="g g2"><img src="images/booth-clean.jpg" alt="LaVenezia Fotobox" loading="lazy" /></div>
+      <div class="g g3"><img src="images/prints-christmas.jpg" alt="Individuelle Fotostreifen" loading="lazy" /></div>
+      <div class="g g4"><img src="images/guestbook.jpg" alt="Gästebuch mit Fotos" loading="lazy" /></div>
+      <div class="g g5"><img src="images/couple-side.jpg" alt="Hochzeitspaar an der Fotobox" loading="lazy" /></div>
+      <div class="g g6"><img src="images/wedding-fun.jpg" alt="Spaß bei der Hochzeit" loading="lazy" /></div>
     </div>
   </div>
 </section>
 
-<!-- ─── EVENTS ─── -->
+<!-- ── CTA STRIP ── -->
+<section class="cta-strip">
+  <div class="inner-narrow">
+    <h2 class="anim">Euer nächstes Event<br><em>unvergesslich machen?</em></h2>
+    <a href="#anfrage" class="btn btn-light anim d1">Jetzt unverbindlich anfragen</a>
+  </div>
+</section>
+
+<!-- ── EVENTS ── -->
 <section class="events-section" id="events">
   <div class="inner">
     <div class="events-head">
-      <p class="label">Für jeden Anlass</p>
-      <h2>Hochzeit oder <em>Corporate Event</em> —<br>wir sind dabei.</h2>
+      <span class="label anim">Für jeden Anlass</span>
+      <h2 class="anim d1">Hochzeit oder <em>Corporate</em> —<br>wir sind dabei.</h2>
     </div>
     <div class="events-grid">
-      <div class="event-card">
+      <div class="event-card anim">
         <div class="event-img">
-          <img src="images/couple-side.jpg" alt="Hochzeit" />
+          <img src="images/wedding-fun.jpg" alt="Hochzeit" loading="lazy" />
         </div>
-        <p class="event-tag">Hochzeiten</p>
+        <span class="event-tag">Hochzeiten</span>
         <h3>Der schönste Tag,<br><em>unvergesslich festgehalten.</em></h3>
-        <p>Von der romantischen Landvilla bis zur eleganten Wiener Location — LaVenezia fügt sich in jedes Ambiente ein. Individuelle Hochzeits-Templates, Gästebuch-Option und persönliche Betreuung inklusive.</p>
-        <a href="#anfrage" class="btn btn-ghost-dark">Hochzeit anfragen</a>
+        <p class="body-text">Von der romantischen Landvilla bis zur eleganten Wiener Location — LaVenezia fügt sich in jedes Ambiente ein. Individuelle Templates, Gästebuch-Option und persönliche Betreuung inklusive.</p>
+        <a href="#anfrage" class="btn btn-dark">Hochzeit anfragen</a>
       </div>
-      <div class="event-card">
+      <div class="event-card anim d2">
         <div class="event-img">
-          <img src="images/prints-christmas.jpg" alt="Corporate Event" />
+          <img src="images/prints-christmas.jpg" alt="Corporate Event" loading="lazy" />
         </div>
-        <p class="event-tag">Corporate</p>
+        <span class="event-tag">Corporate</span>
         <h3>Ihr Brand.<br><em>Im Mittelpunkt des Erlebnisses.</em></h3>
-        <p>Firmenveranstaltungen, Produktlaunches, Weihnachtsfeiern — LaVenezia wird zum Erlebnis-Element. Corporate Branding auf Prints und Interface, Social Sharing mit eigenem Hashtag.</p>
-        <a href="#anfrage" class="btn btn-ghost-dark">Event anfragen</a>
+        <p class="body-text">Firmenveranstaltungen, Produktlaunches, Weihnachtsfeiern — LaVenezia wird zum Erlebnis-Element. Corporate Branding auf Prints und Interface, Social Sharing mit eigenem Hashtag.</p>
+        <a href="#anfrage" class="btn btn-dark">Event anfragen</a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── PROCESS ─── -->
+<!-- ── TESTIMONIALS ── -->
+<!-- PLACEHOLDER: Replace these with real customer testimonials before launch -->
+<section class="testimonials-section">
+  <div class="inner">
+    <div class="testimonials-head">
+      <span class="label anim">Stimmen unserer Kunden</span>
+      <h2 class="anim d1">Was unsere Gäste <em>sagen.</em></h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial anim">
+        <div class="t-quote-mark">&ldquo;</div>
+        <p class="t-text">Die Fotobox war das absolute Highlight unserer Hochzeit. Jeder Gast war begeistert — und die Bilder sind wirklich wunderschön. Wir würden LaVenezia jederzeit weiterempfehlen.</p>
+        <p class="t-author">Sophie & Markus W.</p>
+        <span class="t-event">Hochzeit · Wien</span>
+      </div>
+      <div class="testimonial anim d1">
+        <div class="t-quote-mark">&ldquo;</div>
+        <p class="t-text">Für unsere Weihnachtsfeier war LaVenezia die perfekte Wahl. Professionell, wunderschön und absolut unkompliziert. Das Team hat alles perfekt organisiert.</p>
+        <p class="t-author">Florian K.</p>
+        <span class="t-event">Corporate Event · Wien</span>
+      </div>
+      <div class="testimonial anim d2">
+        <div class="t-quote-mark">&ldquo;</div>
+        <p class="t-text">Das Holzdesign hat sich perfekt in unsere Hochzeitsdekoration eingefügt. Kein Vergleich zu gewöhnlichen Fotoboxen — das ist echte Handwerkskunst.</p>
+        <p class="t-author">Anna & Julian M.</p>
+        <span class="t-event">Hochzeit · Niederösterreich</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
 <section class="process-section">
   <div class="inner-narrow">
     <div class="process-head">
-      <p class="label">So einfach geht's</p>
-      <h2>Von der Anfrage<br><em>bis zum unvergesslichen Abend.</em></h2>
-      <br>
-      <p class="body-text" style="margin: 0 auto; text-align: center;">Wir machen den Prozess so unkompliziert wie möglich — damit ihr euch auf das Wesentliche konzentrieren könnt.</p>
+      <span class="label anim">So einfach geht's</span>
+      <h2 class="anim d1">Von der Anfrage<br><em>bis zum unvergesslichen Abend.</em></h2>
+      <p class="body-text anim d2">Wir machen den Prozess so unkompliziert wie möglich — damit ihr euch auf das Wesentliche konzentrieren könnt.</p>
     </div>
     <div class="process-steps">
-      <div class="process-step">
+      <div class="process-step anim">
         <div class="step-n">1</div>
         <h4>Anfrage stellen</h4>
         <p>Kurze Nachricht genügt. Datum, Event-Art und eure Vorstellungen.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step anim d1">
         <div class="step-n">2</div>
         <h4>Angebot erhalten</h4>
         <p>Wir melden uns innerhalb von 24h mit einem maßgeschneiderten Angebot.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step anim d2">
         <div class="step-n">3</div>
         <h4>Individuell gestalten</h4>
-        <p>Templates, Prints, Overlays — wir gestalten alles nach euren Wünschen.</p>
+        <p>Templates, Prints, Overlays — alles nach euren Wünschen gestaltet.</p>
       </div>
-      <div class="process-step">
+      <div class="process-step anim d3">
         <div class="step-n">4</div>
         <h4>Genießen</h4>
         <p>Wir kümmern uns um alles. Ihr feiert und genießt den Moment.</p>
       </div>
     </div>
+    <div class="process-cta anim">
+      <a href="#anfrage" class="btn btn-dark">Jetzt anfragen</a>
+    </div>
   </div>
 </section>
 
-<!-- ─── ANFRAGE ─── -->
+<!-- ── ANFRAGE ── -->
 <section class="anfrage-section" id="anfrage">
   <div class="inner-narrow">
-    <div class="anfrage-head">
-      <p class="label">Kontakt & Buchung</p>
+    <div class="anfrage-head anim">
+      <span class="label">Kontakt & Buchung</span>
       <h2>Euer Event.<br><em>Unser Einsatz.</em></h2>
-      <br>
       <p>Füllt das Formular aus — wir melden uns innerhalb von 24 Stunden mit einem persönlichen Angebot.</p>
     </div>
-
-    <form id="anfrage-form">
+    <form id="anfrage-form" novalidate>
       <div class="form-grid">
         <div class="fg">
-          <label for="name">Name</label>
-          <input type="text" id="name" name="name" placeholder="Euer Name" required />
+          <label for="f-name">Name</label>
+          <input type="text" id="f-name" name="name" placeholder="Euer Name" required autocomplete="name" />
         </div>
         <div class="fg">
-          <label for="email">E-Mail</label>
-          <input type="email" id="email" name="email" placeholder="eure@email.at" required />
+          <label for="f-email">E-Mail</label>
+          <input type="email" id="f-email" name="email" placeholder="eure@email.at" required autocomplete="email" />
         </div>
         <div class="fg">
-          <label for="phone">Telefon</label>
-          <input type="tel" id="phone" name="phone" placeholder="+43 ..." />
+          <label for="f-phone">Telefon</label>
+          <input type="tel" id="f-phone" name="phone" placeholder="+43 ..." autocomplete="tel" />
         </div>
         <div class="fg">
-          <label for="date">Datum des Events</label>
-          <input type="date" id="date" name="date" />
+          <label for="f-date">Datum des Events</label>
+          <input type="date" id="f-date" name="date" />
         </div>
         <div class="fg">
-          <label for="event-type">Art des Events</label>
-          <select id="event-type" name="event_type" required>
+          <label for="f-type">Art des Events</label>
+          <select id="f-type" name="event_type" required>
             <option value="" disabled selected>Bitte wählen</option>
-            <option value="Hochzeit">Hochzeit</option>
-            <option value="Corporate Event">Corporate Event</option>
-            <option value="Geburtstag / Party">Geburtstag / Party</option>
-            <option value="Sonstiges">Sonstiges</option>
+            <option>Hochzeit</option>
+            <option>Corporate Event</option>
+            <option>Geburtstag / Party</option>
+            <option>Sonstiges</option>
           </select>
         </div>
         <div class="fg">
-          <label for="location">Location / Ort</label>
-          <input type="text" id="location" name="location" placeholder="Wien, ..." />
+          <label for="f-location">Location / Ort</label>
+          <input type="text" id="f-location" name="location" placeholder="Wien, ..." />
         </div>
         <div class="fg full">
-          <label for="message">Eure Vorstellungen</label>
-          <textarea id="message" name="message" placeholder="Erzählt uns von eurem Event und euren Wünschen..."></textarea>
+          <label for="f-message">Eure Vorstellungen</label>
+          <textarea id="f-message" name="message" placeholder="Erzählt uns von eurem Event und euren Wünschen..."></textarea>
         </div>
       </div>
       <div class="form-foot">
-        <button type="submit" class="btn btn-ghost-white">Anfrage senden</button>
-        <p class="form-note">Wir antworten innerhalb von 24 Stunden · Kein Spam, versprochen.</p>
+        <button type="submit" class="btn btn-white">Anfrage senden</button>
+        <p class="form-note">Wir antworten innerhalb von 24 Stunden &nbsp;·&nbsp; Kein Spam, versprochen.</p>
       </div>
     </form>
-
-    <div class="form-success" id="form-success">
+    <div class="form-success" id="form-success" aria-live="polite">
+      <div class="form-success-ring">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="4,10 8,14 16,6"/>
+        </svg>
+      </div>
       <h3>Vielen Dank.</h3>
       <p>Eure Anfrage ist angekommen. Wir melden uns innerhalb von 24 Stunden persönlich bei euch.</p>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ─── -->
+<!-- ── FOOTER ── -->
 <footer>
-  <a href="#" class="footer-logo">LaVenezia</a>
-  <p class="footer-copy">© 2025 LaVenezia · Wien</p>
-  <div class="footer-links">
-    <a href="#">Impressum</a>
-    <a href="#">Datenschutz</a>
+  <div class="footer-inner">
+    <a href="#" class="footer-logo">LaVenezia</a>
+    <div class="footer-center">
+      <p class="footer-copy">© 2025 LaVenezia · Wien</p>
+      <!-- PLACEHOLDER: Add your real email/phone below -->
+      <p class="footer-contact">
+        <a href="mailto:hallo@lavenezia.at">hallo@lavenezia.at</a>
+      </p>
+    </div>
+    <div class="footer-links">
+      <a href="#">Impressum</a>
+      <a href="#">Datenschutz</a>
+    </div>
   </div>
 </footer>
 
+<!-- ── MOBILE STICKY CTA ── -->
+<div class="mobile-cta" aria-label="Anfrage stellen">
+  <a href="#anfrage">Jetzt anfragen</a>
+</div>
+
+<!-- ── WHATSAPP ── -->
+<!-- PLACEHOLDER: Replace +43XXXXXXXXXX with your real WhatsApp number -->
+<a href="https://wa.me/43XXXXXXXXXX?text=Hallo%20LaVenezia%2C%20ich%20interessiere%20mich%20f%C3%BCr%20eine%20Buchung."
+   class="whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp Kontakt">
+  <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+  </svg>
+</a>
+
 <script>
-  // Nav: transparent on hero, solid on scroll
+  // ── NAV ──
   const nav = document.getElementById('nav');
   function updateNav() {
     const past = window.scrollY > 80;
     nav.classList.toggle('scrolled', past);
-    nav.classList.toggle('light', !past);
+    nav.classList.toggle('light', !past && !nav.classList.contains('menu-open'));
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
 
-  // Form: submit handler
-  // TODO: Replace the URL below with your Formspree endpoint
-  // Sign up free at https://formspree.io, create a form, and paste the URL here
+  // ── HAMBURGER ──
+  const burger = document.getElementById('nav-burger');
+  const overlay = document.getElementById('nav-overlay');
+  function toggleMenu(open) {
+    nav.classList.toggle('menu-open', open);
+    overlay.classList.toggle('open', open);
+    overlay.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (!open) updateNav();
+  }
+  burger.addEventListener('click', () => toggleMenu(!nav.classList.contains('menu-open')));
+  document.querySelectorAll('.overlay-link').forEach(link => {
+    link.addEventListener('click', () => toggleMenu(false));
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && nav.classList.contains('menu-open')) toggleMenu(false);
+  });
+
+  // ── SCROLL ANIMATIONS ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+
+  // ── FORM ──
+  // TODO: Replace FORM_ENDPOINT with your Formspree URL
+  // Free at https://formspree.io — create a form and paste the endpoint here
   // Example: 'https://formspree.io/f/YOUR_FORM_ID'
   const FORM_ENDPOINT = '';
 
-  document.getElementById('anfrage-form').addEventListener('submit', async function (e) {
+  document.getElementById('anfrage-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = e.target;
-    const data = Object.fromEntries(new FormData(form));
     const btn = form.querySelector('button[type="submit"]');
-    btn.textContent = 'Wird gesendet…';
+    const data = Object.fromEntries(new FormData(form));
+
+    // Basic validation
+    if (!data.name || !data.email || !data.event_type) {
+      btn.textContent = 'Bitte alle Pflichtfelder ausfüllen';
+      setTimeout(() => { btn.textContent = 'Anfrage senden'; }, 3000);
+      return;
+    }
+
+    btn.textContent = 'Wird gesendet …';
     btn.disabled = true;
 
     if (FORM_ENDPOINT) {
@@ -785,16 +926,12 @@
         btn.disabled = false;
       }
     } else {
-      // Fallback: open mail client
-      const subject = encodeURIComponent('LaVenezia Anfrage — ' + (data['event_type'] || 'Event'));
+      const subject = encodeURIComponent('LaVenezia Anfrage — ' + (data.event_type || 'Event'));
       const body = encodeURIComponent(
-        'Name: ' + data.name + '\n' +
-        'E-Mail: ' + data.email + '\n' +
-        'Telefon: ' + (data.phone || '—') + '\n' +
-        'Datum: ' + (data.date || '—') + '\n' +
-        'Event: ' + (data.event_type || '—') + '\n' +
-        'Location: ' + (data.location || '—') + '\n\n' +
-        (data.message || '')
+        'Name: ' + data.name + '\nE-Mail: ' + data.email +
+        '\nTelefon: ' + (data.phone || '—') + '\nDatum: ' + (data.date || '—') +
+        '\nEvent: ' + (data.event_type || '—') + '\nLocation: ' + (data.location || '—') +
+        '\n\n' + (data.message || '')
       );
       window.location.href = 'mailto:hallo@lavenezia.at?subject=' + subject + '&body=' + body;
       form.style.display = 'none';
